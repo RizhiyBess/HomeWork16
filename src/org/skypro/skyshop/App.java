@@ -78,5 +78,34 @@ public class App {
             }
         }
 
+
+        try {
+            SimpleProduct eggs = new SimpleProduct(null, 100);
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Название продукта не может быть пустым или null.");
+        }
+
+        try {
+            SimpleProduct chocolate = new SimpleProduct("Шоколад", 0);
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Цена должна быть строго больше 0");
+        }
+
+        try {
+            DiscountedProduct watermelon = new DiscountedProduct("Арбуз", 300, 105);
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Процент скидки может быть от 0 до 100 включительно");
+        }
+
+        try{
+            searchEngine.findBestMatch("сырок глазированный");
+        }
+        catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

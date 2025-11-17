@@ -1,8 +1,5 @@
 package org.skypro.skyshop.product;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SearchEngine {
 
     private final Searchable[] searchables;
@@ -32,4 +29,26 @@ public class SearchEngine {
             throw new IllegalStateException("Массив заполнен");
         }
     }
+
+    public Searchable findBestMatch(String search) throws BestResultNotFound {
+
+        int maxCount = 0;
+        Searchable mostFrequentObject = null;
+
+        for (Searchable s : searchables) {
+            if (s != null) {
+                String currentString = s.getSearchTerm();
+                long count = currentString.split(search).length - 1;
+                if (count > maxCount) {
+                    maxCount = (int) count;
+                    mostFrequentObject = s;
+                }
+            }
+        }
+        if (mostFrequentObject == null) {
+            throw new BestResultNotFound("Не найдено подходящего результата для поиска: " + search);
+        }
+        return mostFrequentObject;
+    }
+
 }
