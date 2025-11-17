@@ -1,10 +1,9 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
-import org.skypro.skyshop.product.DiscountedProduct;
-import org.skypro.skyshop.product.FixPriceProduct;
-import org.skypro.skyshop.product.Product;
-import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.product.*;
+
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
@@ -44,5 +43,40 @@ public class App {
         basket.addingProduct(new SimpleProduct("Молоко", 100));
         basket.addingProduct(new DiscountedProduct("Яблоки", 150, 20));
         basket.addingProduct(new FixPriceProduct("Сыр"));
+
+
+        SearchEngine searchEngine = new SearchEngine(10);
+        Article article1 = new Article("Молоко полезно для здоровья", "Стакан молока в день укрепляет здоровье");
+        Article article2 = new Article("Сезон Яблок", "В этом году огромный урожай яблок");
+        Article article3 = new Article("Виды Сыров", "В нашем магазине огромное количество сыров разных видов");
+
+        searchEngine.add(article1);
+        searchEngine.add(article2);
+        searchEngine.add(article3);
+
+        System.out.println("Поиск по слову \"Яблок\" ");
+        Searchable[] results = searchEngine.search("Яблок");
+        for (Searchable result : results) {
+            if (result != null) {
+                System.out.println(result);
+            }
+        }
+
+        System.out.println("Поиск по слову \"Сыр\" ");
+        results = searchEngine.search("Сыр");
+        for (Searchable result : results) {
+            if (result != null) {
+                System.out.println(result);
+            }
+        }
+
+        System.out.println("Поиск по слову \" \" ");
+        results = searchEngine.search(" ");
+        for (Searchable result : results) {
+            if (result != null) {
+                System.out.println(result);
+            }
+        }
+
     }
 }
