@@ -2,27 +2,21 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class ProductBasket {
-    private final static int maxProducts = 5;
-    private Product[] products = new Product[maxProducts];
-    private int a = 0;
+    List<Product> products = new ArrayList<>();
 
     public void addingProduct(Product product) {
-        if (a >= maxProducts) {
-            System.out.println("Невозможно добавить продукт");
-            return;
-        }
-        products[a++] = product;
+        products.add(product);
         System.out.println(product);
         System.out.println("Специальных товаров: " + countSpecialProducts());
     }
 
     int countSpecialProducts() {
         int specialCount = 0;
-        for(Product i : products) {
-            if(i != null && i.isSpecial()) {
+        for (Product i : products) {
+            if (i != null && i.isSpecial()) {
                 specialCount++;
             }
         }
@@ -61,9 +55,27 @@ public class ProductBasket {
     }
 
     public void clearBasket() {
-        for (int c = 0; c < maxProducts; c++) {
-            products[c] = null;
+        products.clear();
+    }
+
+    public List<Product> productRemoval(String name) {
+        Iterator<Product> iterator = products.iterator();
+        List<Product> removedProducts = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            Product currentProduct = iterator.next();
+
+            if (currentProduct.getNameProduct().equals(name)) {
+                removedProducts.add(currentProduct);
+                iterator.remove();
+            }
         }
-        a = 0;
+        return removedProducts;
+    }
+
+    public void printBasket() {
+        System.out.println("Содержимое корзины");
+        for (Product p : products)
+            System.out.println(p.getNameProduct() + " " + p.getPriceProduct());
     }
 }

@@ -4,6 +4,7 @@ import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
@@ -32,7 +33,7 @@ public class App {
         //6 Поиск товара, которого нет в корзине.
         System.out.println("Есть ли в корзине лимон? " + basket.checkingProductAvailability(lemon.getNameProduct()));
         //7 Очистка корзины.
-        basket.clearBasket();
+//        basket.clearBasket();
         //8 Печать содержимого пустой корзины.
         basket.printProduct();
         //9 Получение стоимости пустой корзины.
@@ -40,12 +41,7 @@ public class App {
         //10 Поиск товара по имени в пустой корзине.
         System.out.println("Есть ли в корзине сыр? " + basket.checkingProductAvailability(cheese.getNameProduct()));
 
-        basket.addingProduct(new SimpleProduct("Молоко", 100));
-        basket.addingProduct(new DiscountedProduct("Яблоки", 150, 20));
-        basket.addingProduct(new FixPriceProduct("Сыр"));
-
-
-        SearchEngine searchEngine = new SearchEngine(10);
+        SearchEngine searchEngine = new SearchEngine();
         Article article1 = new Article("Молоко полезно для здоровья", "Стакан молока в день укрепляет здоровье");
         Article article2 = new Article("Сезон Яблок", "В этом году огромный урожай яблок");
         Article article3 = new Article("Виды Сыров", "В нашем магазине огромное количество сыров разных видов");
@@ -55,57 +51,61 @@ public class App {
         searchEngine.add(article3);
 
         System.out.println("Поиск по слову \"Яблок\" ");
-        Searchable[] results = searchEngine.search("Яблок");
+        List<Searchable> results = searchEngine.search("Яблок");
         for (Searchable result : results) {
-            if (result != null) {
-                System.out.println(result);
-            }
+            System.out.println(result);
         }
 
         System.out.println("Поиск по слову \"Сыр\" ");
         results = searchEngine.search("Сыр");
         for (Searchable result : results) {
-            if (result != null) {
-                System.out.println(result);
-            }
+            System.out.println(result);
         }
 
         System.out.println("Поиск по слову \" \" ");
         results = searchEngine.search(" ");
         for (Searchable result : results) {
-            if (result != null) {
-                System.out.println(result);
-            }
+            System.out.println(result);
         }
-
 
         try {
             SimpleProduct eggs = new SimpleProduct(null, 100);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Название продукта не может быть пустым или null.");
         }
 
         try {
             SimpleProduct chocolate = new SimpleProduct("Шоколад", 0);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Цена должна быть строго больше 0");
         }
 
         try {
             DiscountedProduct watermelon = new DiscountedProduct("Арбуз", 300, 105);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Процент скидки может быть от 0 до 100 включительно");
         }
 
-        try{
+        try {
             searchEngine.findBestMatch("сырок глазированный");
-        }
-        catch (BestResultNotFound e) {
+        } catch (BestResultNotFound e) {
             System.out.println(e.getMessage());
         }
 
+        //1 Удаляем существующий продукт из корзины
+        List<Product> deletedApple = basket.productRemoval("Яблоки");
+        //2 Выводим удаленный продукты
+        System.out.println("Удалены продукты:");
+        for (Product p : deletedApple)
+            System.out.println("Удаленный продукт " + p.getNameProduct() + " " + p.getPriceProduct());
+        //3 Состояние корзины
+        basket.printBasket();
+        //4 Удалить несуществующий продукт
+        List<Product> deletedBanana = basket.productRemoval("Бананы");
+        //5 Проверяем, что список удаленных продуктов пустой и выводим сообщение “Список пуст”
+        if (deletedBanana.isEmpty())
+            System.out.println("Список пус");
+        //6 Состояние корзины
+        basket.printBasket();
     }
 }
