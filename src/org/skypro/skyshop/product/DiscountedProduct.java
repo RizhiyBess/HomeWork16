@@ -9,6 +9,12 @@ public class DiscountedProduct extends Product {
         super(nameProduct);
         this.bisePrice = bisePrice;
         this.discountWholePercentages = discountWholePercentages;
+        if (bisePrice <= 0){
+            throw new IllegalArgumentException("Базовая цена должна быть строго больше 0");
+        }
+        if (discountWholePercentages > 100 || discountWholePercentages < 0) {
+            throw new IllegalArgumentException("Процент скидки может быть от 0 до 100 включительно");
+        }
     }
 
     @Override
