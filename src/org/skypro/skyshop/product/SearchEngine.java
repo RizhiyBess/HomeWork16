@@ -1,7 +1,9 @@
 package org.skypro.skyshop.product;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchEngine {
 
@@ -11,14 +13,14 @@ public class SearchEngine {
         this.searchables = new ArrayList<>();
     }
 
-    public List<Searchable> search(String searchString) {
-        List<Searchable> results = new ArrayList<>();
+    public Map<String, Searchable> search(String searchString){
+        Map<String, Searchable> resultMap = new HashMap<>();
         for (Searchable s : searchables) {
             if (s != null && s.getSearchTerm().contains(searchString)) {
-                results.add(s);
+                resultMap.put(s.getStringRepresentation(), s);
             }
         }
-        return results;
+        return resultMap;
     }
 
     public void add(Searchable searchable) {

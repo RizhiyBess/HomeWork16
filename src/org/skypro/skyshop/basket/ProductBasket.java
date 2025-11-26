@@ -5,53 +5,52 @@ import org.skypro.skyshop.product.Product;
 import java.util.*;
 
 public class ProductBasket {
-    List<Product> products = new ArrayList<>();
+    Map<String, List<Product>> products = new LinkedHashMap<>();
 
     public void addingProduct(Product product) {
-        products.add(product);
+        List<Product> productList = products.getOrDefault(product.getNameProduct(), new ArrayList<>());
+        productList.add(product);
+        products.put(product.getNameProduct(), productList);
         System.out.println(product);
         System.out.println("Специальных товаров: " + countSpecialProducts());
     }
 
     int countSpecialProducts() {
         int specialCount = 0;
-        for (Product i : products) {
-            if (i != null && i.isSpecial()) {
-                specialCount++;
+        for (List<Product> list : products.values())
+            for (Product i : list) {
+                if (i.isSpecial()) {
+                    specialCount++;
+                }
             }
-        }
         return specialCount;
     }
 
     public int totalCost() {
         int sum = 0;
-        for (Product b : products) {
-            if (b != null)
+        for (List<Product> list : products.values())
+            for (Product b : list) {
                 sum += b.getPriceProduct();
-        }
+            }
         return sum;
     }
 
     public void printProduct() {
         boolean empty = true;
-        for (Product b : products) {
-            if (b != null) {
-                System.out.println(b.getNameProduct() + ": " + b.getPriceProduct());
-                empty = false;
+        for (String key : products.keySet()){
+            List<Product> list = products.get(key);
+            for (Product b : list) {
+                    System.out.println(b.getNameProduct() + ": " + b.getPriceProduct());
+                    empty = false;
+                }
             }
-        }
         if (empty) {
             System.out.println("В корзине пусто");
         }
     }
 
     public boolean checkingProductAvailability(String name) {
-        for (Product b : products) {
-            if (b != null && b.getNameProduct().equals(name)) {
-                return true;
-            }
-        }
-        return false;
+        return products.containsKey(name);
     }
 
     public void clearBasket() {
@@ -59,23 +58,17 @@ public class ProductBasket {
     }
 
     public List<Product> productRemoval(String name) {
-        Iterator<Product> iterator = products.iterator();
-        List<Product> removedProducts = new ArrayList<>();
-
-        while (iterator.hasNext()) {
-            Product currentProduct = iterator.next();
-
-            if (currentProduct.getNameProduct().equals(name)) {
-                removedProducts.add(currentProduct);
-                iterator.remove();
-            }
-        }
-        return removedProducts;
+        List<Product> removedProducts = products.remove(name);
+        return removedProducts != null ? removedProducts : Collections.emptyList();
     }
 
     public void printBasket() {
         System.out.println("Содержимое корзины");
-        for (Product p : products)
-            System.out.println(p.getNameProduct() + " " + p.getPriceProduct());
+        for (String key : products.keySet()){
+            List<Product> list = products.get(key);
+            for (Product p : list){
+                System.out.println(p.getNameProduct() + " " + p.getPriceProduct());
+            }
+        }
     }
 }

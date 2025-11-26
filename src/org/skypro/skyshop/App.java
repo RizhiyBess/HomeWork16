@@ -5,6 +5,7 @@ import org.skypro.skyshop.product.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
@@ -51,20 +52,20 @@ public class App {
         searchEngine.add(article3);
 
         System.out.println("Поиск по слову \"Яблок\" ");
-        List<Searchable> results = searchEngine.search("Яблок");
-        for (Searchable result : results) {
+        Map<String, Searchable> results = searchEngine.search("Яблок");
+        for (Searchable result : results.values()) {
             System.out.println(result);
         }
 
         System.out.println("Поиск по слову \"Сыр\" ");
         results = searchEngine.search("Сыр");
-        for (Searchable result : results) {
+        for (Searchable result : results.values()) {
             System.out.println(result);
         }
 
         System.out.println("Поиск по слову \" \" ");
         results = searchEngine.search(" ");
-        for (Searchable result : results) {
+        for (Searchable result : results.values()) {
             System.out.println(result);
         }
 
@@ -104,7 +105,7 @@ public class App {
         List<Product> deletedBanana = basket.productRemoval("Бананы");
         //5 Проверяем, что список удаленных продуктов пустой и выводим сообщение “Список пуст”
         if (deletedBanana.isEmpty())
-            System.out.println("Список пус");
+            System.out.println("Список пуст");
         //6 Состояние корзины
         basket.printBasket();
     }
