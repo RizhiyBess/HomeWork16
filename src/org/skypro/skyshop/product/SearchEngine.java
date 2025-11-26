@@ -1,37 +1,31 @@
 package org.skypro.skyshop.product;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SearchEngine {
 
-    private final Searchable[] searchables;
-    private int currentSize;
+    private final List<Searchable> searchables;
 
-    public SearchEngine(int foundCount) {
-        this.searchables = new Searchable[foundCount];
-        this.currentSize = 0;
+    public SearchEngine() {
+        this.searchables = new ArrayList<>();
     }
 
-    public Searchable[] search(String searchString) {
-        Searchable[] results = new Searchable[5];
-        int foundCount = 0;
+    public List<Searchable> search(String searchString) {
+        List<Searchable> results = new ArrayList<>();
         for (Searchable s : searchables) {
             if (s != null && s.getSearchTerm().contains(searchString)) {
-                results[foundCount++] = s;
-                if (foundCount == 5) break;
+                results.add(s);
             }
         }
         return results;
     }
 
     public void add(Searchable searchable) {
-        if (currentSize < searchables.length) {
-            searchables[currentSize++] = searchable;
-        } else {
-            throw new IllegalStateException("Массив заполнен");
-        }
+        searchables.add(searchable);
     }
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
-
         int maxCount = 0;
         Searchable mostFrequentObject = null;
 
