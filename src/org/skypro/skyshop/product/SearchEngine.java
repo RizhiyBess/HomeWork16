@@ -1,26 +1,36 @@
 package org.skypro.skyshop.product;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SearchEngine {
 
-    private final List<Searchable> searchables;
+    private final Set<Searchable> searchables;
 
     public SearchEngine() {
-        this.searchables = new ArrayList<>();
+        this.searchables = new HashSet<>();
     }
 
-    public Map<String, Searchable> search(String searchString){
-        Map<String, Searchable> resultMap = new HashMap<>();
+    public Set<Searchable> search(String searchString) {
+        Set<Searchable> resultSet = new TreeSet<>(new MyComporator());
         for (Searchable s : searchables) {
             if (s != null && s.getSearchTerm().contains(searchString)) {
-                resultMap.put(s.getStringRepresentation(), s);
+                resultSet.add(s);
             }
         }
-        return resultMap;
+        return resultSet;
+    }
+
+    public class MyComporator implements Comparator<Searchable> {
+        @Override
+        public int compare(Searchable s1, Searchable s2) {
+            int lengthComparison = Integer.compare(
+                    s2.getSearchTerm().length(),
+                    s1.getSearchTerm().length());
+            if (lengthComparison != 0) {
+                return lengthComparison;
+            }
+            return s1.getSearchTerm().compareTo(s2.getSearchTerm());
+        }
     }
 
     public void add(Searchable searchable) {
