@@ -3,9 +3,7 @@ package org.skypro.skyshop;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class App {
     public static void main(String[] args) {
@@ -44,28 +42,26 @@ public class App {
 
         SearchEngine searchEngine = new SearchEngine();
         Article article1 = new Article("Молоко полезно для здоровья", "Стакан молока в день укрепляет здоровье");
-        Article article2 = new Article("Сезон Яблок", "В этом году огромный урожай яблок");
+        Article article2 = new Article("сезон Яблок", "В этом году огромный урожай яблок");
         Article article3 = new Article("Виды Сыров", "В нашем магазине огромное количество сыров разных видов");
+        Article article4 = new Article("Скидки на Яблоки", "скидки по 75% на яблоки любых сортов");
+        Article article5 = new Article("Весенние молодые Яблоки", "Ранний урожай яблок ");
 
         searchEngine.add(article1);
         searchEngine.add(article2);
         searchEngine.add(article3);
+        searchEngine.add(article4);
+        searchEngine.add(article5);
 
         System.out.println("Поиск по слову \"Яблок\" ");
-        Map<String, Searchable> results = searchEngine.search("Яблок");
-        for (Searchable result : results.values()) {
+        Set<Searchable> results = searchEngine.search("Яблок");
+        for (Searchable result : results) {
             System.out.println(result);
         }
 
         System.out.println("Поиск по слову \"Сыр\" ");
         results = searchEngine.search("Сыр");
-        for (Searchable result : results.values()) {
-            System.out.println(result);
-        }
-
-        System.out.println("Поиск по слову \" \" ");
-        results = searchEngine.search(" ");
-        for (Searchable result : results.values()) {
+        for (Searchable result : results) {
             System.out.println(result);
         }
 
