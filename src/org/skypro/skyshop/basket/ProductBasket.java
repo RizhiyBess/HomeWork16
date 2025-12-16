@@ -16,35 +16,35 @@ public class ProductBasket {
     }
 
     int countSpecialProducts() {
-        int specialCount = 0;
-        for (List<Product> list : products.values())
-            for (Product i : list) {
-                if (i.isSpecial()) {
-                    specialCount++;
-                }
-            }
-        return specialCount;
+        return products.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(Product::isSpecial)
+                .mapToInt(i -> 1)
+                .sum();
     }
 
     public int totalCost() {
-        int sum = 0;
-        for (List<Product> list : products.values())
-            for (Product b : list) {
-                sum += b.getPriceProduct();
-            }
-        return sum;
+        return products.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .mapToInt(Product::getPriceProduct)
+                .sum();
     }
 
     public void printProduct() {
-        boolean empty = true;
-        for (String key : products.keySet()){
-            List<Product> list = products.get(key);
-            for (Product b : list) {
-                    System.out.println(b.getNameProduct() + ": " + b.getPriceProduct());
-                    empty = false;
-                }
-            }
-        if (empty) {
+        boolean isEmpty = products.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .findAny()
+                .isEmpty();
+        if (!isEmpty) {
+            products.values()
+                    .stream()
+                    .flatMap(Collection::stream)
+                    .forEach(product -> System.out.println(
+                            product.getNameProduct() + ": " + product.getPriceProduct()));
+        } else {
             System.out.println("В корзине пусто");
         }
     }
@@ -64,11 +64,6 @@ public class ProductBasket {
 
     public void printBasket() {
         System.out.println("Содержимое корзины");
-        for (String key : products.keySet()){
-            List<Product> list = products.get(key);
-            for (Product p : list){
-                System.out.println(p.getNameProduct() + " " + p.getPriceProduct());
-            }
-        }
+        products.forEach((key, value) -> value.forEach(product -> System.out.println(product.getNameProduct() + " " + product.getPriceProduct())));
     }
 }
